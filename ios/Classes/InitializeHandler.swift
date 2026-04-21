@@ -28,8 +28,9 @@ struct InitializeHandler {
     static func handle(call: FlutterMethodCall, result: @escaping FlutterResult) {
         guard let args = call.arguments as? [String: Any],
               let appId = args["appId"] as? String,
-              let tiktokAppId = args["tiktokId"] as? String else {
-            result(FlutterError(code: "INVALID_ARGUMENTS", message: "Missing 'appId' or 'tiktokId'", details: nil))
+              let tiktokAppId = args["tiktokId"] as? String,
+              let accessToken = args["accessToken"] as? String, !accessToken.isEmpty else {
+            result(FlutterError(code: "INVALID_ARGUMENTS", message: "Missing 'appId', 'tiktokId' or 'accessToken'", details: nil))
             return
         }
 
@@ -41,7 +42,6 @@ struct InitializeHandler {
         let isVerboseLogging = isDebugMode && TikTokErrorHelper.isVerboseLogging(logLevel)
         Logger.configure(verboseEnabled: isVerboseLogging)
         let options = args["options"] as? [String: Any] ?? [:]
-        let accessToken = options["accessToken"] as? String
 
         // Validate ATT suppression consent before continuing
         if options["displayAtt"] as? Bool == false {
@@ -55,13 +55,7 @@ struct InitializeHandler {
             }
         }
 
-        let ttConfig: TikTokConfig
-
-        if let token = accessToken, !token.isEmpty {
-            ttConfig = TikTokConfig(accessToken: token, appId: appId, tiktokAppId: tiktokAppId)!
-        } else {
-            ttConfig = TikTokConfig(appId: appId, tiktokAppId: tiktokAppId)!
-        }
+        let ttConfig = TikTokConfig(accessToken: accessToken, appId: appId, tiktokAppId: tiktokAppId)!
 
         configureOptions(ttConfig: ttConfig, options: options, isDebugMode: isDebugMode, logLevel: logLevel)
 

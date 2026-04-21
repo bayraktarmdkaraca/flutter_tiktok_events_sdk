@@ -83,14 +83,8 @@ class TikTokIosOptions {
   /// This can be a unique identifier linking to your internal consent records.
   final String? attAuditId;
 
-  /// An optional access token used for authenticating requests to the TikTok SDK.
-  ///
-  /// This token may be required for certain advanced features, such as secure event tracking
-  /// or user-specific interactions. If provided, the SDK will include this token
-  /// when communicating with TikTok services.
-  ///
-  /// If `null`, the SDK will operate in a default mode without user-specific authentication.
-  final String? accessToken;
+  /// The access token used for authenticating requests to the TikTok SDK.
+  final String accessToken;
 
   /// Creates an instance of [TikTokIosOptions] with the specified configuration.
   ///
@@ -102,6 +96,7 @@ class TikTokIosOptions {
   ///
   /// These are required for compliance verification and audit trails.
   const TikTokIosOptions({
+    required this.accessToken,
     this.disableTracking = false,
     this.disableAutomaticTracking = false,
     this.disableInstallTracking = false,
@@ -114,7 +109,6 @@ class TikTokIosOptions {
     this.externalConsentTimestamp,
     this.externalConsentStatus,
     this.attAuditId,
-    this.accessToken,
   });
 
   /// Creates a copy of this [TikTokIosOptions] instance with the specified fields updated.
@@ -126,6 +120,7 @@ class TikTokIosOptions {
   /// TikTokIosOptions updatedOptions = iosOptions.copyWith(disablePaymentTracking: true);
   /// ```
   TikTokIosOptions copyWith({
+    String? accessToken,
     bool? disableTracking,
     bool? disableAutomaticTracking,
     bool? disableInstallTracking,
@@ -138,9 +133,9 @@ class TikTokIosOptions {
     String? externalConsentTimestamp,
     String? externalConsentStatus,
     String? attAuditId,
-    String? accessToken,
   }) {
     return TikTokIosOptions(
+      accessToken: accessToken ?? this.accessToken,
       disableTracking: disableTracking ?? this.disableTracking,
       disableAutomaticTracking:
           disableAutomaticTracking ?? this.disableAutomaticTracking,
@@ -162,7 +157,6 @@ class TikTokIosOptions {
       externalConsentStatus:
           externalConsentStatus ?? this.externalConsentStatus,
       attAuditId: attAuditId ?? this.attAuditId,
-      accessToken: accessToken ?? this.accessToken,
     );
   }
 
@@ -188,7 +182,6 @@ class TikTokIosOptions {
       'externalConsentTimestamp': externalConsentTimestamp,
       'externalConsentStatus': externalConsentStatus,
       'attAuditId': attAuditId,
-      'accessToken': accessToken,
     };
   }
 
@@ -209,6 +202,7 @@ class TikTokIosOptions {
         other.externalConsentStatus == externalConsentStatus &&
         other.attAuditId == attAuditId &&
         other.accessToken == accessToken;
+
   }
 
   @override

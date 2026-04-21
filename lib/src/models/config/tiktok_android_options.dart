@@ -51,11 +51,15 @@ class TikTokAndroidOptions {
   /// If `true`, the SDK will not collect the advertiser ID.
   final bool disableAdvertiserIDCollection;
 
+  /// The access token for TikTok API calls.
+  final String accessToken;
+
   /// Creates an instance of [TikTokAndroidOptions] with the specified configuration.
   ///
   /// All options are optional and default to `false`, meaning the corresponding features are enabled
   /// (except for `enableAutoIapTrack`, which is disabled by default).
   const TikTokAndroidOptions({
+    required this.accessToken,
     this.disableAutoStart = false,
     this.disableAutoEvents = false,
     this.disableInstallLogging = false,
@@ -74,6 +78,7 @@ class TikTokAndroidOptions {
   /// TikTokAndroidOptions updatedOptions = androidOptions.copyWith(disableAutoStart: true);
   /// ```
   TikTokAndroidOptions copyWith({
+    String? accessToken,
     bool? disableAutoStart,
     bool? disableAutoEvents,
     bool? disableInstallLogging,
@@ -83,6 +88,7 @@ class TikTokAndroidOptions {
     bool? disableAdvertiserIDCollection,
   }) {
     return TikTokAndroidOptions(
+      accessToken: accessToken ?? this.accessToken,
       disableAutoStart: disableAutoStart ?? this.disableAutoStart,
       disableAutoEvents: disableAutoEvents ?? this.disableAutoEvents,
       disableInstallLogging:
@@ -126,7 +132,8 @@ class TikTokAndroidOptions {
         other.disableLaunchLogging == disableLaunchLogging &&
         other.disableRetentionLogging == disableRetentionLogging &&
         other.enableAutoIapTrack == enableAutoIapTrack &&
-        other.disableAdvertiserIDCollection == disableAdvertiserIDCollection;
+        other.disableAdvertiserIDCollection == disableAdvertiserIDCollection &&
+        other.accessToken == accessToken;
   }
 
   @override
@@ -137,6 +144,7 @@ class TikTokAndroidOptions {
         disableLaunchLogging.hashCode ^
         disableRetentionLogging.hashCode ^
         enableAutoIapTrack.hashCode ^
-        disableAdvertiserIDCollection.hashCode;
+        disableAdvertiserIDCollection.hashCode ^
+        accessToken.hashCode;
   }
 }

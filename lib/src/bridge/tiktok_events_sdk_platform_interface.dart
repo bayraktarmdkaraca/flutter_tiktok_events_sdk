@@ -34,8 +34,8 @@ abstract class TiktokEventsSdkPlatform extends PlatformInterface {
     required String iosAppId,
     required String tiktokIosId,
     bool isDebugMode = false,
-    TikTokAndroidOptions androidOptions = const TikTokAndroidOptions(),
-    TikTokIosOptions iosOptions = const TikTokIosOptions(),
+    required TikTokAndroidOptions androidOptions,
+    required TikTokIosOptions iosOptions,
     TikTokLogLevel logLevel = TikTokLogLevel.info,
   }) async {
     return _instance.initSdk(

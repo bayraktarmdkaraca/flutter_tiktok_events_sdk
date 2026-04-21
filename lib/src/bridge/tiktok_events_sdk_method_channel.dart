@@ -37,14 +37,15 @@ class MethodChannelTiktokEventsSdk extends TiktokEventsSdkPlatform {
     required String iosAppId,
     required String tiktokIosId,
     bool isDebugMode = false,
-    TikTokAndroidOptions androidOptions = const TikTokAndroidOptions(),
-    TikTokIosOptions iosOptions = const TikTokIosOptions(),
+    required TikTokAndroidOptions androidOptions,
+    required TikTokIosOptions iosOptions,
     TikTokLogLevel logLevel = TikTokLogLevel.info,
   }) async {
     bool isIos = Platform.isIOS;
     final appId = isIos ? iosAppId : androidAppId;
     final tiktokId = isIos ? tiktokIosId : tikTokAndroidId;
     final options = isIos ? iosOptions.toMap() : androidOptions.toMap();
+    final accessToken = isIos ? iosOptions.accessToken : androidOptions.accessToken;
 
     try {
       final result = await methodChannel.invokeMethod(methodName.initialize, {
@@ -53,6 +54,7 @@ class MethodChannelTiktokEventsSdk extends TiktokEventsSdkPlatform {
         'isDebugMode': isDebugMode,
         'logLevel': logLevel.name,
         'options': options,
+        'accessToken': accessToken,
       });
       log(result);
     } catch (e) {
@@ -96,12 +98,7 @@ class MethodChannelTiktokEventsSdk extends TiktokEventsSdkPlatform {
     try {
       await methodChannel.invokeMethod(
         methodName.identify,
-        {
-          'externalId': identifier.externalId,
-          'externalUserName': identifier.externalUserName,
-          'phoneNumber': identifier.phoneNumber,
-          'email': identifier.email,
-        },
+        identifier.toMap(),
       );
       log('TikTok identifier set successfully');
     } catch (e, _) {

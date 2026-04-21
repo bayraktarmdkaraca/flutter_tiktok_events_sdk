@@ -17,8 +17,8 @@ class MockTiktokEventsSdkPlatform with MockPlatformInterfaceMixin implements Tik
     required String iosAppId,
     required String tiktokIosId,
     bool isDebugMode = false,
-    TikTokAndroidOptions androidOptions = const TikTokAndroidOptions(),
-    TikTokIosOptions iosOptions = const TikTokIosOptions(),
+    required TikTokAndroidOptions androidOptions,
+    required TikTokIosOptions iosOptions,
     TikTokLogLevel logLevel = TikTokLogLevel.info,
   }) async {
     await Future.value();

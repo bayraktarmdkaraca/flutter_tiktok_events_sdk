@@ -32,10 +32,67 @@ class TikTokIdentifier {
   /// - [externalUserName]: The username associated with the user.
   /// - [phoneNumber]: The user's phone number in a valid international format.
   /// - [email]: The user's email address.
-  TikTokIdentifier({
+  const TikTokIdentifier({
     required this.externalId,
     this.externalUserName,
     this.email,
     this.phoneNumber,
   });
+
+  /// Creates a copy of this [TikTokIdentifier] instance with the specified fields updated.
+  ///
+  /// This method is useful for modifying specific fields without changing the rest.
+  ///
+  /// Example:
+  /// ```dart
+  /// TikTokIdentifier updated = identifier.copyWith(email: 'new@example.com');
+  /// ```
+  TikTokIdentifier copyWith({
+    String? externalId,
+    String? externalUserName,
+    String? phoneNumber,
+    String? email,
+  }) {
+    return TikTokIdentifier(
+      externalId: externalId ?? this.externalId,
+      externalUserName: externalUserName ?? this.externalUserName,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      email: email ?? this.email,
+    );
+  }
+
+  /// Converts this [TikTokIdentifier] instance to a map.
+  ///
+  /// This is useful for serializing the identifier to pass to native code.
+  ///
+  /// Example:
+  /// ```dart
+  /// Map<String, dynamic> identifierMap = identifier.toMap();
+  /// ```
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'externalId': externalId,
+      'externalUserName': externalUserName,
+      'phoneNumber': phoneNumber,
+      'email': email,
+    };
+  }
+
+  @override
+  bool operator ==(covariant TikTokIdentifier other) {
+    if (identical(this, other)) return true;
+
+    return other.externalId == externalId &&
+        other.externalUserName == externalUserName &&
+        other.phoneNumber == phoneNumber &&
+        other.email == email;
+  }
+
+  @override
+  int get hashCode {
+    return externalId.hashCode ^
+        externalUserName.hashCode ^
+        phoneNumber.hashCode ^
+        email.hashCode;
+  }
 }

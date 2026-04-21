@@ -8,7 +8,7 @@ class TikTokService {
     required String iosAppId,
     required String tiktokIosId,
     bool isDebugMode = false,
-    String? accessToken,
+    required String accessToken,
     TikTokLogLevel logLevel = TikTokLogLevel.info,
   }) async {
     debugPrint('🔵 TikTokService.init called');
@@ -16,12 +16,6 @@ class TikTokService {
         '🔵 Android App ID: ${androidAppId.isEmpty ? "EMPTY" : androidAppId.substring(0, androidAppId.length > 10 ? 10 : androidAppId.length)}...');
     debugPrint(
         '🔵 iOS App ID: ${iosAppId.isEmpty ? "EMPTY" : iosAppId.substring(0, iosAppId.length > 10 ? 10 : iosAppId.length)}...');
-    debugPrint('🔵 Access Token: ${accessToken != null ? "PROVIDED" : "null"}');
-
-    // Build iOS options with access token if provided
-    final iosOptions = TikTokIosOptions(
-      accessToken: accessToken,
-    );
 
     debugPrint('🔵 Calling TikTokEventsSdk.initSdk...');
     await TikTokEventsSdk.initSdk(
@@ -30,7 +24,8 @@ class TikTokService {
       iosAppId: iosAppId,
       tiktokIosId: tiktokIosId,
       isDebugMode: isDebugMode,
-      iosOptions: iosOptions,
+      androidOptions: TikTokAndroidOptions(accessToken: accessToken),
+      iosOptions: TikTokIosOptions(accessToken: accessToken),
       logLevel: logLevel,
     );
     debugPrint('✅ TikTokEventsSdk.initSdk completed');
@@ -41,15 +36,11 @@ class TikTokService {
   }
 
   static Future<void> identify({
-    String? externalId,
+    required String externalId,
     String? externalUserName,
     String? phoneNumber,
     String? email,
   }) async {
-    if (externalId == null || externalUserName == null || email == null) {
-      throw Exception('externalId, externalUserName, and email are required');
-    }
-
     final identifier = TikTokIdentifier(
       externalId: externalId,
       externalUserName: externalUserName,

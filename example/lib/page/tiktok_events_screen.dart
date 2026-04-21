@@ -593,6 +593,13 @@ class _TikTokEventsPageState extends State<TikTokEventsPage> {
       final isIos = Platform.isIOS;
       debugPrint('🔵 Platform: ${isIos ? "iOS" : "Android"}');
 
+      // Validate access token (required on both platforms)
+      if (accessToken.isEmpty) {
+        debugPrint('❌ Access token validation failed');
+        _showSnackBar('Please fill in Access Token', isSuccess: false);
+        return;
+      }
+
       // Only validate the platform-specific fields based on current platform
       if (isIos) {
         if (iosAppId.isEmpty || tiktokIosId.isEmpty) {
@@ -624,7 +631,7 @@ class _TikTokEventsPageState extends State<TikTokEventsPage> {
         iosAppId: iosAppId,
         tiktokIosId: tiktokIosId,
         isDebugMode: _isDebugMode,
-        accessToken: accessToken.isNotEmpty ? accessToken : null,
+        accessToken: accessToken,
         logLevel: logLevel,
       );
 

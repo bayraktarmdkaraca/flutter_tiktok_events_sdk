@@ -81,6 +81,7 @@ sealed class TikTokMethod(
                         TikTokBusinessSdk.LogLevel.INFO
                     }
 
+                val accessToken = call.argument<String>("accessToken")
                 val options = call.argument<Map<String, Any>>("options") ?: emptyMap()
 
                 // Validate required parameters
@@ -91,8 +92,13 @@ sealed class TikTokMethod(
                     return
                 }
 
+                if (accessToken.isNullOrEmpty()) {
+                    result.emitError("Parameter 'accessToken' was not provided or is invalid.")
+                    return
+                }
+
                 var ttConfig =
-                    TTConfig(context)
+                    TTConfig(context, accessToken)
                         .setAppId(appId)
                         .setTTAppId(tiktokAppId)
                         .setLogLevel(logLevel)
